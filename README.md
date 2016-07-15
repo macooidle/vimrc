@@ -38,11 +38,11 @@ inoremap <expr><C-l>     neocomplete#complete_common_string()
 " let g:neocomplete#enable_auto_select = 1
 " Enable omni completion.
 if has("autocmd")
-	autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-	autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-	autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-	" autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-	autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+  autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+  autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+  autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+  autocmd FileType python setlocal omnifunc=python3complete#Complete
+  autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 endif
 
 " Enable heavy omni completion.
@@ -54,6 +54,12 @@ endif
 "let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
 
 " end of neocomplete
+
+" folding xml file
+augroup XML
+    autocmd!
+    autocmd FileType xml setlocal foldmethod=indent foldlevelstart=999 foldminlines=0
+augroup END
 
 set laststatus=2
 set number
@@ -86,6 +92,14 @@ behave mswin
 colorscheme solarized 
 nmap <F7> :NERDTreeToggle<CR>
 nmap <F8> :TagbarToggle<CR>
+
+" for ssh edit
+let g:netrw_cygwin = 0
+let g:netrw_list_cmd = "D:/K/tools/plink.exe -P 27903 -pw 1Mon1kzk fanqiang@23.83.250.19 ls -Fa "
+let g:netrw_ssh_cmd  = "D:/K/tools/plink.exe -T -ssh"
+let g:netrw_scp_cmd  = "D:/K/tools/pscp.exe -P 27903 -pw 1Mon1kzk -scp"
+let g:netrw_sftp_cmd = "D:/K/tools/pscp.exe -pw 1Mon1kzk -sftp"
+
 set diffexpr=MyDiff()
 function MyDiff()
   let opt = '-a --binary '
@@ -133,10 +147,11 @@ endfunction
 
 " Adding automatons for when entering or leaving Vim
 if(argc() == 0)
-	au VimEnter * nested :call LoadSession()
+  au VimEnter * nested :call LoadSession()
 endif
 au VimLeave * :call MakeSession()
 
 set nobackup
 set nowritebackup
 set noswapfile
+set noundofile
